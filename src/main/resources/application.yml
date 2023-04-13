@@ -17,11 +17,26 @@ logging:
     max-size: 10MB
 management:
   endpoint:
+    env:
+      # show the values in actuator/env endpoint
+      # e.g. http://localhost:8101/actuator/env
+      show-values: ALWAYS
+    configprops:
+      # show the values in actuator/configprops endpoint
+      # e.g. http://localhost:8101/actuator/configprops
+      show-values: ALWAYS
     health:
-      show-details=always:
+      # Note show-details
+      show-details: ALWAYS
     shutdown:
       enabled: true
   endpoints:
+    env:
+      # mask these values in actuator/env endpoint
+      keys-to-sanitize: password,secret
+    configprops:
+      # mask these values in actuator/configprops endpoint
+      keys-to-sanitize: password,secret
     web:
       exposure:
         include: "*"
