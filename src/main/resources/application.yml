@@ -1,0 +1,107 @@
+spring:
+  application:
+    name: Car Hire App
+  boot:
+    admin:
+      client:
+        url: http://localhost:8100
+server:
+  port: 8101
+  error:
+    # e.g. when an 500 error is displayed will have the underlying error message
+    include-message: always
+logging:
+  file:
+    name: car-hire-app.log
+    max-history: 5
+    max-size: 10MB
+management:
+  endpoint:
+    health:
+      show-details=always:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# Application data to prime the in memory database - TEST purposes only
+application-data:
+  bookings:
+    - id: 1
+      car:
+        id: 1
+        registrationPlate: LL62MVF
+        make: Porsche
+        model: Cayenne
+        type: SUV
+        capacity: 5
+      location:
+        id: 1
+        locationName: Toronto
+      startDate: 2023-03-20
+      endDate: 2023-03-24
+      status: BOOKED
+  locations:
+    - id: 1
+      locationName: Toronto
+    - id: 2
+      locationName: Vancouver
+    - id: 3
+      locationName: Ottawa
+  cars:
+    - id: 1
+      registrationPlate: LL72MVF
+      make: Porsche
+      model: Cayenne
+      type: SUV
+      capacity: 5
+      location:
+        id: 1
+        locationName: Toronto
+    - id: 2
+      registrationPlate: LL15RDF
+      make: Range Rover
+      model: Discovery
+      type: SUV
+      capacity: 7
+      location:
+        id: 1
+        locationName: Toronto
+    - id: 3
+      registrationPlate: LL23UBS
+      make: BMW
+      model: 520D
+      type: Sedan
+      capacity: 5
+      location:
+        id: 2
+        locationName: Vancouver
+    - id: 4
+      registrationPlate: LL45UBS
+      make: Lincoln
+      model: Navigator
+      type: SUV
+      capacity: 7
+      location:
+        id: 2
+        locationName: Vancouver
+    - id: 5
+      registrationPlate: LL45UBS
+      make: Tesla
+      model: Model S
+      type: Sedan
+      capacity: 5
+      location:
+        id: 3
+        locationName: Ottawa
+    - id: 6
+      registrationPlate: LL45UBS
+      make: Tesla
+      model: Model X
+      type: SUV
+      capacity: 7
+      location:
+        id: 3
+        locationName: Ottawa
