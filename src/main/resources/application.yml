@@ -6,6 +6,8 @@ spring:
       client:
         # Where the Spring boot admin resides
         url: http://localhost:8100
+        # When shut down deregisters from spring boot admin
+        auto-deregistration: true
 server:
   # Allow for automatic available port allocation
   port: 0
