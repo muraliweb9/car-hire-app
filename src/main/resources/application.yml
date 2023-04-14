@@ -4,9 +4,11 @@ spring:
   boot:
     admin:
       client:
+        # Where the Spring boot admin resides
         url: http://localhost:8100
 server:
-  port: 8101
+  # Allow for automatic available port allocation
+  port: 0
   error:
     # e.g. when an 500 error is displayed will have the underlying error message
     include-message: always
@@ -40,6 +42,14 @@ management:
     web:
       exposure:
         include: "*"
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}:${random.value}}
 
 # Application data to prime the in memory database - TEST purposes only
 application-data:
