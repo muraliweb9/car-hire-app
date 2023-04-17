@@ -36,6 +36,9 @@ public class BookingServiceSpringTest {
     @MockBean
     private BookingRepository bookingRepository;
 
+    @MockBean
+    private MaintenanceServiceProxy maintenanceServiceProxy;
+
     @Autowired
     BookingService bookingService;
 
