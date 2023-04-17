@@ -22,18 +22,11 @@ public class MaintenanceServiceProxy {
     @Autowired
     RestTemplate restTemplate;
 
-    @Bean
-    @LoadBalanced
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-
     public MaintenanceRecord getMaintenanceRecord(String carId)
     {
         log.info("Looking up in car-maintenance-app for maintenance record for carId {}", carId);
         MaintenanceRecord maintenanceRecord
-                = restTemplate.getForObject(apiBaseUrl + "/maintenancerecords/" + carId, MaintenanceRecord.class);
+                = restTemplate.getForObject(apiBaseUrl + "/maintenance/maintenancerecords/" + carId, MaintenanceRecord.class);
 
         if (maintenanceRecord != null) {
             log.info("Found maintenance record for carId {}", carId);

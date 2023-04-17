@@ -200,7 +200,7 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("maintenanceRecord/{carId}")
+    @GetMapping("maintenanceRecord/{carIdVar}")
     @SneakyThrows
     public MaintenanceRecord maintenanceRecord(@PathVariable String carIdVar) {
         log.info("Looking up maintenance record for carid {}", carIdVar);
