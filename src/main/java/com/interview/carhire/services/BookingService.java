@@ -4,13 +4,16 @@ import com.interview.carhire.data.Booking;
 import com.interview.carhire.data.BookingStatus;
 import com.interview.carhire.data.Car;
 import com.interview.carhire.data.Location;
+import com.interview.carhire.data.MaintenanceRecord;
 import com.interview.carhire.repository.BookingRepository;
 import com.interview.carhire.repository.CarRepository;
 import com.interview.carhire.repository.LocationRepository;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +42,7 @@ import static com.interview.carhire.services.ValidationUtils.validateAvailable;
 @RestController
 @RequestMapping("/carhire")
 @Validated
+@Slf4j
 public class BookingService {
 
     private Semaphore bookingsSemaphore = new Semaphore(1);
@@ -48,12 +52,16 @@ public class BookingService {
 
     private BookingRepository bookingRepository;
 
+    private MaintenanceServiceProxy maintenanceServiceProxy;
+
     @Autowired
     public BookingService(CarRepository carRepository, LocationRepository locationRepository,
-                          BookingRepository bookingRepository) {
+                          BookingRepository bookingRepository,
+                          MaintenanceServiceProxy maintenanceServiceProxy) {
         this.carRepository = carRepository;
         this.locationRepository = locationRepository;
         this.bookingRepository = bookingRepository;
+        this.maintenanceServiceProxy = maintenanceServiceProxy;
     }
 
     @GetMapping("cars")
@@ -190,6 +198,21 @@ public class BookingService {
         return StreamSupport.stream(bookingRepository.findAll().spliterator(), false)
                 .filter(b -> b.getStatus() == bookingStatus)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("maintenanceRecord/{carId}")
+    @SneakyThrows
+    public MaintenanceRecord maintenanceRecord(@PathVariable String carIdVar) {
+        log.info("Looking up maintenance record for carid {}", carIdVar);
+        Optional<Car> carOpt = carRepository.findById(carIdVar);
+        if (carOpt.isPresent()) {
+            log.info("Found car for carid {}", carIdVar);
+            Car car = carOpt.get();
+            String carId = car.getId();
+            return maintenanceServiceProxy.getMaintenanceRecord(carId);
+        }
+        log.info("Not found car for carid {}", carIdVar);
+        return null;
     }
 
     private Integer getMaxBookingId() {

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Car Hire App
+    name: car-hire-app
   boot:
     admin:
       client:
@@ -10,7 +10,7 @@ spring:
         auto-deregistration: true
 server:
   # Allow for automatic available port allocation
-  port: 0
+  port: 8101
   error:
     # e.g. when an 500 error is displayed will have the underlying error message
     include-message: always
@@ -68,7 +68,9 @@ eureka:
     leaseRenewalIntervalInSeconds: 10
     metadataMap:
       instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}:${random.value}}
-
+api:
+  car-maintenance-app:
+    baseurl: http://car-maintenance-app
 # Application data to prime the in memory database - TEST purposes only
 application-data:
   bookings:

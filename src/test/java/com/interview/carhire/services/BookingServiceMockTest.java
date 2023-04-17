@@ -64,7 +64,7 @@ class BookingServiceMockTest {
                         Car.builder().make("Lincoln").build())
         );
 
-        BookingService service = new BookingService(mock, null, null);
+        BookingService service = new BookingService(mock, null, null, null);
         assertEquals(4L, StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(
                         service.cars(),
@@ -81,7 +81,7 @@ class BookingServiceMockTest {
                         Car.builder().make("Lincoln").build())
         );
 
-        BookingService service = new BookingService(mock, null, null);
+        BookingService service = new BookingService(mock, null, null, null);
         assertEquals(3L, StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(
                         service.cars(),
