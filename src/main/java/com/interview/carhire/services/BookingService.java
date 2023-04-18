@@ -9,6 +9,13 @@ import com.interview.carhire.data.TransactionRecord;
 import com.interview.carhire.repository.BookingRepository;
 import com.interview.carhire.repository.CarRepository;
 import com.interview.carhire.repository.LocationRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +47,7 @@ import static com.interview.carhire.services.ValidationUtils.validateAvailable;
 /**
  * Main REST service class
  */
+@Tag(name = "Tutorial", description = "Tutorial management APIs")
 @RestController
 @RequestMapping("/carhire")
 @Validated
@@ -70,6 +78,14 @@ public class BookingService {
         this.procurementServiceProxy = procurementServiceProxy;
     }
 
+    @Operation(
+            summary = "Retrieve all the cars",
+            description = "Get the list of cars available to book",
+            tags = { "cars", "get" })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Car.class), mediaType = "application/json") }),
+            @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+            @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("cars")
     public Iterator<Car> cars() {
         return carRepository.findAll().iterator();
@@ -157,8 +173,7 @@ public class BookingService {
             } else {
                 throw new BookingServiceException("Requested booking cannot be selected - vehicle not available");
             }
-        }
-        finally {
+        } finally {
             //Thread.sleep(5000L);
             System.out.println(Thread.currentThread().getName() + " releasing semaphore");
             bookingsSemaphore.release();
@@ -189,8 +204,7 @@ public class BookingService {
                 throw new BookingServiceException("Requested booking cannot be booked - booking not found");
                 //return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        }
-        finally {
+        } finally {
             bookingsSemaphore.release();
         }
 
@@ -224,20 +238,15 @@ public class BookingService {
     @GetMapping("maintenanceRecordTry/{carIdVar}")
     @SneakyThrows
     public MaintenanceRecord maintenanceRecordTry(@PathVariable String carIdVar) {
-        try {
-            log.info("Looking up maintenance record try for carid {}", carIdVar);
-            Optional<Car> carOpt = carRepository.findById(carIdVar);
-            if (carOpt.isPresent()) {
-                log.info("Found car for carid {}", carIdVar);
-                Car car = carOpt.get();
-                String carId = car.getId();
-                return maintenanceServiceProxy.getMaintenanceRecordTry(carId);
-            }
-            log.info("Not found car for carid {}", carIdVar);
+        log.info("Looking up maintenance record try for carid {}", carIdVar);
+        Optional<Car> carOpt = carRepository.findById(carIdVar);
+        if (carOpt.isPresent()) {
+            log.info("Found car for carid {}", carIdVar);
+            Car car = carOpt.get();
+            String carId = car.getId();
+            return maintenanceServiceProxy.getMaintenanceRecordTry(carId);
         }
-        catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        log.info("Not found car for carid {}", carIdVar);
         return null;
     }
 

@@ -79,6 +79,15 @@
             <version>6.0.10.Final</version>
         </dependency>
 
+        <!-- Exposes the OPenAPI documentation -->
+        <!-- e.g. at http://localhost:65386/swagger-ui/index.html -->
+        <!-- JSON docs e.g. at http://localhost:65386/v3/api-docs -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+
         <!-- exclude junit 4 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
