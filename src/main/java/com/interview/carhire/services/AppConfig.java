@@ -17,8 +17,10 @@ import java.util.Arrays;
 @Configuration
 public class AppConfig {
 
+    /*
     @Value("${server.port}")
     private String serverPort;
+     */
 
     @Bean
     @LoadBalanced
@@ -38,9 +40,11 @@ public class AppConfig {
 
     @Bean
     public OpenAPI myOpenAPI() {
+        /*
         Server server = new Server();
         server.setUrl("localhost:" + serverPort);
         server.setDescription("Server URL in Development environment");
+         */
 
         Contact contact = new Contact();
         contact.setEmail("muraliweb@hotmail.com");
@@ -57,6 +61,7 @@ public class AppConfig {
                 .termsOfService("https://cap-hire-app/terms")
                 .license(mitLicense);
 
-        return new OpenAPI().info(info).servers(Arrays.asList(server));
+        //return new OpenAPI().info(info).servers(Arrays.asList(server));
+        return new OpenAPI().info(info);
     }
 }
