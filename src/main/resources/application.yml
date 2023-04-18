@@ -70,7 +70,7 @@ eureka:
       instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}:${random.value}}
 api:
   car-maintenance-app:
-    # This is the apring.application.name of the car-maintenance-app as registered with Eureka
+    # This is the spring.application.name of the car-maintenance-app as registered with Eureka
     baseurl: http://car-maintenance-app
 # Application data to prime the in memory database - TEST purposes only
 application-data:

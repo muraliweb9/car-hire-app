@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableConfigurationProperties
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients // Look for @FeignClient and configure these in app
 public class CarHireAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(CarHireAppApplication.class, args);
