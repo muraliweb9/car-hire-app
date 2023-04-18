@@ -35,7 +35,7 @@ public class BookingServiceMockitoExtensionTest {
     @Test
     public void test1() {
 
-        BookingService service = new BookingService(null, locationRepository, null, null);
+        BookingService service = new BookingService(null, locationRepository, null, null, null);
         assertEquals(3L, StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(
                         service.locations(),

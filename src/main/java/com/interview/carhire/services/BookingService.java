@@ -5,6 +5,7 @@ import com.interview.carhire.data.BookingStatus;
 import com.interview.carhire.data.Car;
 import com.interview.carhire.data.Location;
 import com.interview.carhire.data.MaintenanceRecord;
+import com.interview.carhire.data.TransactionRecord;
 import com.interview.carhire.repository.BookingRepository;
 import com.interview.carhire.repository.CarRepository;
 import com.interview.carhire.repository.LocationRepository;
@@ -54,14 +55,19 @@ public class BookingService {
 
     private MaintenanceServiceProxy maintenanceServiceProxy;
 
+    private ProcurementServiceProxy procurementServiceProxy;
+
     @Autowired
-    public BookingService(CarRepository carRepository, LocationRepository locationRepository,
+    public BookingService(CarRepository carRepository,
+                          LocationRepository locationRepository,
                           BookingRepository bookingRepository,
-                          MaintenanceServiceProxy maintenanceServiceProxy) {
+                          MaintenanceServiceProxy maintenanceServiceProxy,
+                          ProcurementServiceProxy procurementServiceProxy) {
         this.carRepository = carRepository;
         this.locationRepository = locationRepository;
         this.bookingRepository = bookingRepository;
         this.maintenanceServiceProxy = maintenanceServiceProxy;
+        this.procurementServiceProxy = procurementServiceProxy;
     }
 
     @GetMapping("cars")
@@ -210,6 +216,21 @@ public class BookingService {
             Car car = carOpt.get();
             String carId = car.getId();
             return maintenanceServiceProxy.getMaintenanceRecord(carId);
+        }
+        log.info("Not found car for carid {}", carIdVar);
+        return null;
+    }
+
+    @GetMapping("transactionRecord/{carIdVar}")
+    @SneakyThrows
+    public List<TransactionRecord> transactionRecord(@PathVariable String carIdVar) {
+        log.info("Looking up transaction record for carid {}", carIdVar);
+        Optional<Car> carOpt = carRepository.findById(carIdVar);
+        if (carOpt.isPresent()) {
+            log.info("Found car for carid {}", carIdVar);
+            Car car = carOpt.get();
+            String carId = car.getId();
+            return procurementServiceProxy.transactionrecordsFor(carId);
         }
         log.info("Not found car for carid {}", carIdVar);
         return null;
