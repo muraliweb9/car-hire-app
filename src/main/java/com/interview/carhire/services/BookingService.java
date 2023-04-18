@@ -221,6 +221,26 @@ public class BookingService {
         return null;
     }
 
+    @GetMapping("maintenanceRecordTry/{carIdVar}")
+    @SneakyThrows
+    public MaintenanceRecord maintenanceRecordTry(@PathVariable String carIdVar) {
+        try {
+            log.info("Looking up maintenance record try for carid {}", carIdVar);
+            Optional<Car> carOpt = carRepository.findById(carIdVar);
+            if (carOpt.isPresent()) {
+                log.info("Found car for carid {}", carIdVar);
+                Car car = carOpt.get();
+                String carId = car.getId();
+                return maintenanceServiceProxy.getMaintenanceRecordTry(carId);
+            }
+            log.info("Not found car for carid {}", carIdVar);
+        }
+        catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
     @GetMapping("transactionRecord/{carIdVar}")
     @SneakyThrows
     public List<TransactionRecord> transactionRecord(@PathVariable String carIdVar) {
