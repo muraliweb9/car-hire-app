@@ -10,7 +10,7 @@ spring:
         auto-deregistration: true
 server:
   # Allow for automatic available port allocation
-  port: 8101
+  port: 0
   error:
     # e.g. when an 500 error is displayed will have the underlying error message
     include-message: always
@@ -70,6 +70,7 @@ eureka:
       instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}:${random.value}}
 api:
   car-maintenance-app:
+    # This is the apring.application.name of the car-maintenance-app as registered with Eureka
     baseurl: http://car-maintenance-app
 # Application data to prime the in memory database - TEST purposes only
 application-data:
