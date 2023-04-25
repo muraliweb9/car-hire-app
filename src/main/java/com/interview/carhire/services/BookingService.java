@@ -47,7 +47,7 @@ import static com.interview.carhire.services.ValidationUtils.validateAvailable;
 /**
  * Main REST service class
  */
-@Tag(name = "Tutorial", description = "Tutorial management APIs")
+@Tag(name = "Booking Service", description = "Car Hire Booking Service")
 @RestController
 @RequestMapping("/carhire")
 @Validated

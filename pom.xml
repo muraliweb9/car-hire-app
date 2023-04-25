@@ -85,7 +85,7 @@
             <version>6.0.10.Final</version>
         </dependency-->
 
-        <!-- Exposes the OPenAPI documentation -->
+        <!-- Exposes the OpenAPI documentation -->
         <!-- e.g. at http://localhost:50598/swagger-ui/index.html -->
         <!-- JSON docs e.g. at http://localhost:50598/v3/api-docs -->
         <dependency>
