@@ -13,13 +13,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class MaintenanceServiceProxy {
 
     /**
-     * Defined in this services application.yml
-     * api:
-     * car-maintenance-app:
-     * # This is the apring.application.name of the car-maintenance-app as registered with Eureka
-     * baseurl: http://car-maintenance-app
+     * Defined in this service's (i.e. car-hire-app) application.yml
+     api:
+        car-maintenance-app:
+        # This is the spring.application.name of the car-maintenance-app as registered with Eureka
+            baseurl: http://car-maintenance-app
      */
     @Value("${api.car-maintenance-app.baseurl}")
+    // http://car-maintenance-app
     private String apiBaseUrl;
 
     // Defined in com.interview.carhire.services.AppConfig
@@ -31,13 +32,13 @@ public class MaintenanceServiceProxy {
     @Autowired
     private WebClient.Builder webClient;
 
+    // RestTemplate implementation
     public MaintenanceRecord getMaintenanceRecord(String carId) {
         log.info("Looking up in car-maintenance-app for maintenance record for carId {} using RestTemplate", carId);
         // Constructs
         // http://car-maintenance-app/maintenance/maintenancerecords/2
         // Through Eureka http://car-maintenance-app maps to the car-maintenance-app
         // This endpoint (/maintenance/maintenancerecords/2) is then hit
-
         String uri = apiBaseUrl + "/maintenance/maintenancerecords/" + carId;
         MaintenanceRecord maintenanceRecord
                 = restTemplate.getForObject(uri, MaintenanceRecord.class);
@@ -48,6 +49,7 @@ public class MaintenanceServiceProxy {
         return maintenanceRecord;
     }
 
+    // WebClient implementation
     public MaintenanceRecord getMaintenanceRecordTry(String carId) {
         log.info("Looking up in car-maintenance-app for maintenance record for carId {} using WebClient", carId);
         // Constructs
